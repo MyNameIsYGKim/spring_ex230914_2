@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- DB의 표기법:스네이크 표기법 -> Java의 표기법:카멜 표기법 -->
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<!-- java의 null -> DB의 무엇으로 인식할 것인지 -->
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	
+	<typeAliases>
+	<!-- 클래스명=별칭 -->
+		<package name="com.yedam.test2"/>
+	</typeAliases>
+	
+	<!-- 날짜에 대한 처리 -->
+	<typeHandlers>
+		<!-- java.sql.Timestamp -> java.util.Date -->
+		<typeHandler javaType="java.sql.Date" handler="org.apache.ibatis.type.DateTypeHandler"/>
+	</typeHandlers>
+</configuration>

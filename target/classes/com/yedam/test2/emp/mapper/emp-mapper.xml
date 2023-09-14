@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yedam.test2.emp.mapper.EmpMapper">
+	<!-- 전체조회 -->
+	<select id="selectEmpAllList" resultType="EmpVO">
+		<!-- c_id : cId -> setCId : cid -->
+		SELECT employee_id
+			   , first_name
+			   , last_name
+			   , email
+			   , phone_number
+			   , hire_date
+			   , job_id
+			   , salary
+			   , commission_pct
+			   , manager_id
+			   , department_id
+		FROM employees
+		<where>
+			<if test="managerId > 0">
+				manager_id = #{managerId}
+			</if>
+			<if test="departmentId > 0">
+				department_id = #{departmentId}
+			</if>
+		</where>
+		ORDER BY employee_id
+	</select>
+	
+	<!-- 단건조회 -->
+	<select id="selectEmpInfo" resultType="EmpVO">
+		SELECT employee_id
+			   , first_name
+			   , last_name
+			   , email
+			   , phone_number
+			   , hire_date
+			   , job_id
+			   , salary
+			   , commission_pct
+			   , manager_id
+			   , department_id
+		FROM employees
+		WHERE employee_id = #{employeeId}
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="insertEmpInfo" parameterType="EmpVO">
+		<selectKey keyProperty="employeeId"
+				   resultType="int" 
+				   order="BEFORE">
+			SELECT NVL(MAX(employee_id),0) +1
+			FROM employees
+		</selectKey>
+		INSERT INTO employees
+				(
+					employee_id
+					<if test="firstName != null and !firstName.equals('')">
+					, first_name
+					</if>
+					, last_name
+					, email
+					, hire_date
+					, job_id
+					<if test="departmentId > 0">
+					, department_id
+					</if>
+				)
+				values
+				(
+					#{employeeId}
+					<if test="firstName != null and !firstName.equals('')">
+					, #{firstName}
+					</if>
+					, #{lastName}
+					, #{email}
+					<choose>
+						<when test="hireDate == null">
+							, sysdate
+						</when>
+						<otherwise>
+							, #{hireDate}
+						</otherwise>
+					</choose>
+					, #{jobId}
+					<if test="departmentId > 0">
+					, #{departmentId}
+					</if>
+				)
+	</insert>
+	
+	<!-- 수정: 급여를 정해진 비율로 인상 -->
+	<update id="updateEmpSal"><!-- 파라미터값이 2개 이상이면 생략. 알아서 넣어줌. -->
+	
+	
+	</update>
+	
+	<!-- 수정: 사원 정보 수정 -->
+	<update id="updateEmpInfo" parameterType="EmpVO">
+	
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="deleteEmpInfo" parameterType="int">
+	
+	</delete>
+	
+</mapper>
