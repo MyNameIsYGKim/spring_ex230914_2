@@ -2,6 +2,8 @@ package com.yedam.test2.emp.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.yedam.test2.emp.service.EmpVO;
 
 public interface EmpMapper {
@@ -15,7 +17,8 @@ public interface EmpMapper {
 	public int insertEmpInfo(EmpVO empVO);
 	
 	// 수정 - 급여를 정해진 비율로 인상
-	public int updateEmpSal(int employeeId, int raise);
+	public int updateEmpSal(@Param("empId") int employeeId,
+							@Param("raise") int raise);
 	
 	// 수정 - 사원 정보 수정
 	public int updateEmpInfo(EmpVO empVO);

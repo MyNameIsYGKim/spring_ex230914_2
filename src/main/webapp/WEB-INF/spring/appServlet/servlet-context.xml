@@ -13,6 +13,7 @@
 	<annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+		<!-- (mapping -> URL / location -> 물리적 위치) webapp밑에 들어가야 함 -->
 	<resources mapping="/resources/**" location="/resources/" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
@@ -21,7 +22,9 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.yedam.test2" />
+	<context:component-scan base-package="com.yedam.test2">
+		<context:include-filter type="annotation" expression="Controller"/>
+	</context:component-scan>
 	
 	
 	

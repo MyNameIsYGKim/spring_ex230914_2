@@ -8,27 +8,5 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	<context:property-placeholder location="classpath:config/db.properties" />
-
-	<!-- datasource connection pool -->
-	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName" value="${driverName}" />
-		<property name="jdbcUrl" value="${dbUrl}" />
-		<property name="username" value="${dbId}" />
-		<property name="password" value="${dbPwd}" />
-	</bean>
-
-	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
-		destroy-method="close">
-		<constructor-arg ref="hikariConfig" />
-	</bean>
-
-	<!-- mybatis SqlSessionFactory -->
-	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
-		<property name="configLocation" value="classpath:config/mybatis-config.xml" />
-		<property name="mapperLocations" value="classpath*:com/yedam/test2/**/mapper/*-mapper.xml" />
-	</bean>
-
-	<mybatis-spring:scan base-package="com.yedam.test2.**.mapper" />
+	
 </beans>

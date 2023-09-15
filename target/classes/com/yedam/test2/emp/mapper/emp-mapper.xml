@@ -93,18 +93,38 @@
 	
 	<!-- 수정: 급여를 정해진 비율로 인상 -->
 	<update id="updateEmpSal"><!-- 파라미터값이 2개 이상이면 생략. 알아서 넣어줌. -->
-	
-	
+		UPDATE employees
+		SET salary = salary * ( 1 + #{raise}/100 )
+		WHERE employee_id = #{empId}
 	</update>
 	
 	<!-- 수정: 사원 정보 수정 -->
+	<!-- 1) 단건조회 선행 -> 모든 항목에 데이터가 존재 => 전체 업데이트 -->
+	<!-- 2) 개별 정보 수정 -> Dynamic SQL 사용 -->
 	<update id="updateEmpInfo" parameterType="EmpVO">
-	
+		UPDATE employees
+		<set>
+			<!-- set절에는 최소 1개이상이 남아야 한다. -->
+			<if test="firstName != null and !firstName.equals('')">
+				first_name = #{firstName},
+			</if>
+			<if test="email != null and !email.equals('')">
+				email = #{email},
+			</if>
+			<if test="salary lte 0">
+				salary = 1000
+			</if>
+			<if test="salary gt 0">
+				salary = #{salary}
+			</if>
+		</set>
+		WHERE employee_id = #{employeeId}
 	</update>
 	
 	<!-- 삭제 -->
 	<delete id="deleteEmpInfo" parameterType="int">
-	
+		DELETE FROM employees
+		WHERE employee_id = #{eid} <!-- 파라미터가 하나면 이름 상관 X -->
 	</delete>
 	
 </mapper>
