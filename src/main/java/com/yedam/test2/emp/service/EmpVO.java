@@ -16,5 +16,5 @@ public class EmpVO {
 	private double salary;
 	private double commission_pct;
 	private int managerId;
-	private int departmentId;
+	private Integer departmentId;
 }
