@@ -13,7 +13,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body>
-<p>${result }</p>
+	<button type="button">선택삭제</button>
+	<button type="button" onclick="location.href='empInsert'">등록</button>
 	<table>
 		<thead>
 			<tr>
@@ -70,6 +71,63 @@
 			
 			location.href= 'empInfo?employeeId=' + empId;
 		});
+		
+		// 단건삭제
+		$('tr button').on('click', empInfoDel);
+		
+		function empInfoDel(event){
+			let trTag = event.currentTarget.closest('tr');
+			let empId = $(trTag).children().eq(1).text();
+			
+			$.ajax('empDelete?employeeId='+empId)
+			.done(result => {
+				console.log(result);
+				//trTag.remove();
+				
+				let deletedId = result.list[0];
+				$('tbody > tr > td:nth-of-type(2)').each(function(idx, tag){
+					if(tag.textContent == deletedId){
+						$(tag).parent().remove();
+					}
+				})
+			})
+			.fail(reject => console.log(reject));
+		};
+		// 선택삭제
+		$('button:eq(0)').on('click', empListDelete);
+		
+		function empListDelete(event){
+			// 선택한 사원번호를 가지는 배열
+			let empIdList = getEmpList();
+			
+			// ajax
+			$.ajax('empDelete', {
+				type: 'post',
+				contentType: 'application/json',
+				data: JSON.stringify(empIdList)
+			})
+			.done(result=>{
+				if(result){
+					// 강제 페이지 전환 방법(ajax에 부적합!)
+					location.href='empList';
+					
+					
+				}
+			})
+			.fail(reject => console.log(reject));
+		}
+		
+		function getEmpList(){
+			let checkTag = $('tbody input[type="checkbox"]:checked');
+			
+			let empList = [];
+			checkTag.each(function(idx,inTag){
+				let empId = $(inTag).parent().next().text();
+				empList.push(empId);
+			});
+			
+			return empList;
+		}
 	</script>
 </body>
 </html>
