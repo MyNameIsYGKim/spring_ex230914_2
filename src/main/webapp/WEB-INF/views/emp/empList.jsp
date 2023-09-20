@@ -50,14 +50,6 @@
 		</tbody>
 	</table>
 	<script>
-		let message = [
-						<c:forEach begin="1" end="5">
-						`${result}`,
-						</c:forEach>
-						];
-		
-		if(message.length > 0) alert(message.toString());
-		
 		// 두 가지 이상의 하위요소를 배제할 때.
 		$('tbody > tr').on('click', function(e){
 			if(e.target.tagName != 'TD') return;
